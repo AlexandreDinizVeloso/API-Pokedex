@@ -1,6 +1,19 @@
+h1 {
+    text-align: center;
+}
+#pesquisaPokemon{
+    text-align: center;
+    border: 3px solid black;
+    border-radius: 8px;
+    margin-left: 300px;
+    margin-right: 300px;
+}
 .molduraPokemon {
-    float: left;
-    margin: 5px;
+    float: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 300px;
+    margin-right: 300px;
     border: 3px solid black;
     border-radius: 8px;
 }
