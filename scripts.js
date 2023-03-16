@@ -1,12 +1,23 @@
 function acessarPokedex() {
     let pokemon = document.getElementById("nomePokemon").value
     let url = `https://pokemon.danielpimentel.com.br/v1/pokemon/nome/${pokemon}`
-    fetch(url)
+    return new Promise((resolve, reject) => {
+        fetch(url)
             .then((resposta) => resposta.json())
-            .then((pokemon) => carregaPokedex(pokemon.pokemon))
-            .catch((erro) => console.log(erro))
+            .then((pokemon) => resolve(pokemon.pokemon))
+            .catch((erro) => reject(erro))
+    })
 }
-
+function checarPokemon() {
+    let geracao = document.getElementById("geracaoPokemon").value
+    acessarPokedex().then((pokemon)=>{
+        if (geracao == pokemon.geracao) {
+            carregaPokedex(pokemon)
+        } else {
+            alert("ERRO")
+        }
+    })
+}
 function carregaPokedex(pokemon) {
     let pesquisaPokemon = document.getElementById("pesquisaPokemon");
     pesquisaPokemon.innerHTML = ""
