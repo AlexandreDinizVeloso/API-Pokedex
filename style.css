@@ -28,6 +28,7 @@ button {
     margin-bottom: 20px;
 }
 .molduraPokemonPesquisa {
+    text-transform: capitalize;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,6 +41,7 @@ button {
 }
   
 .molduraPokemonGeracao {
+    text-transform: capitalize;
     display: inline-block;
     margin: 5px;
     border: 3px solid black;
