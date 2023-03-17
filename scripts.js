@@ -1,60 +1,67 @@
-function acessarPokedex() {
-    let pokemon = document.getElementById("nomePokemon").value
-    let url = `https://pokemon.danielpimentel.com.br/v1/pokemon/nome/${pokemon}`
-    return new Promise((resolve, reject) => {
-        fetch(url)
-            .then((resposta) => resposta.json())
-            .then((pokemon) => resolve(pokemon.pokemon))
-            .catch((erro) => reject(erro))
-    })
+const pesquisaPokemon = document.getElementById("pesquisaPokemon");
+
+async function acessarPokedex() {
+  const pokemon = document.getElementById("nomePokemon").value;
+  const url = `https://pokemon.danielpimentel.com.br/v1/pokemon/nome/${pokemon}`;
+  try {
+    const resposta = await fetch(url);
+    const { pokemon: p } = await resposta.json();
+    return p;
+  } catch (erro) {
+    console.log(erro);
+  }
 }
 
-function acessarGeracao() {
-    let geracao = document.getElementById("geracaoPokemon").value
-    let url = `https://pokemon.danielpimentel.com.br/v1/pokemon/geracao/${geracao}/50/1`
-    fetch(url)
-            .then((resposta) => resposta.json())
-            .then((pokemon) => carregaGeracao(pokemon.pokemon))
-            .catch((erro) => console.log(erro))
+async function acessarGeracao() {
+  const geracao = document.getElementById("geracaoPokemon").value;
+  const url = `https://pokemon.danielpimentel.com.br/v1/pokemon/geracao/${geracao}/50/1`;
+  try {
+    const resposta = await fetch(url);
+    const { pokemon: p } = await resposta.json();
+    carregaGeracao(p);
+  } catch (erro) {
+    console.log(erro);
+  }
 }
 
 function checarPokemon() {
-    let geracao = document.getElementById("geracaoPokemon").value
-    acessarPokedex().then((pokemon)=>{
-        if (geracao == pokemon.geracao) {
-            carregaPokemon(pokemon)
-        } else {
-            alert("ERRO")
-        }
-    })
+  const geracao = document.getElementById("geracaoPokemon").value;
+  acessarPokedex().then((pokemon) => {
+    if (geracao == pokemon.geracao) {
+      carregaPokemon(pokemon);
+    } else {
+      alert("ERRO");
+    }
+  });
 }
 
 function carregaPokemon(pokemon) {
-    let pesquisaPokemon = document.getElementById("pesquisaPokemon");
-    pesquisaPokemon.innerHTML = ""
-    let html = `
-        <div class="molduraPokemonPesquisa">
-            <img src="${pokemon.img_3d}" heigth="150" /> <br>
-            <div class="infoPokemon">
-                ${pokemon.nome} - ${pokemon.numero}
-            </div>
+  pesquisaPokemon.innerHTML = "";
+  const html = `
+    <div class="molduraPokemonPesquisa">
+        <img src="${pokemon.img_3d}" height="150" /> <br>
+        <div class="infoPokemon">
+            ${pokemon.nome} - ${pokemon.numero}
         </div>
-    `;
-    pesquisaPokemon.insertAdjacentHTML("beforeend", html);
+    </div>
+  `;
+  pesquisaPokemon.insertAdjacentHTML("beforeend", html);
 }
 
 function carregaGeracao(pokemon) {
-    let pesquisaPokemon = document.getElementById("pesquisaPokemon");
-    pesquisaPokemon.innerHTML = ""
-    for (let i = 0; i < pokemon.length; i++) {
-        let html = `
-            <div class="molduraPokemonGeracao">
-                <img src="${pokemon[i].img_3d}" heigth="150" /> <br>
-                <div class="infoPokemon">
-                    ${pokemon[i].nome} - ${pokemon[i].numero}
-                </div>
-            </div>  
-        `;  
-        pesquisaPokemon.insertAdjacentHTML("beforeend", html);
-    }
+  pesquisaPokemon.innerHTML = "";
+  pokemon.forEach((p) => {
+    const html = `
+      <div class="molduraPokemonGeracao">
+          <img src="${p.img_3d}" height="150" /> <br>
+          <div class="infoPokemon">
+              ${p.nome} - ${p.numero}
+          </div>
+      </div>
+    `;
+    pesquisaPokemon.insertAdjacentHTML("beforeend", html);
+  });
 }
+
+document.getElementById("botaoPesquisa").addEventListener("click", checarPokemon);
+document.getElementById("botaoPesquisaGeracao").addEventListener("click", acessarGeracao);
